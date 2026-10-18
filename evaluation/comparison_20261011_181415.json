@@ -1,0 +1,454 @@
+{
+  "project": "AutoBug Bounty IDPS",
+  "generated_at": "2026-10-11T12:44:15.869464+00:00",
+  "autobug_source": "/home/himanshu/auto-bugbounty-idps/reports/security_scan_20261011_174924_380828.json",
+  "zap_source": "/home/himanshu/auto-bugbounty-idps/evaluation/zap_report.json",
+  "counts": {
+    "autobug_candidates": 7,
+    "zap_alert_instances": 42,
+    "candidate_matches": 0,
+    "autobug_only": 7,
+    "zap_only": 42
+  },
+  "matched_candidates": [],
+  "autobug_only_candidates": [
+    {
+      "source": "AutoBug",
+      "name": "Content-Security-Policy",
+      "url": "http://127.0.0.1:3000/",
+      "severity": "Medium",
+      "evidence": "Header not present",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "AutoBug",
+      "name": "Referrer-Policy",
+      "url": "http://127.0.0.1:3000/",
+      "severity": "Low",
+      "evidence": "Header not present",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "AutoBug",
+      "name": "Permissions-Policy",
+      "url": "http://127.0.0.1:3000/",
+      "severity": "Low",
+      "evidence": "Header not present",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "AutoBug",
+      "name": "CORS configuration",
+      "url": "http://127.0.0.1:3000/",
+      "severity": "Low",
+      "evidence": "Access-Control-Allow-Origin: *",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "AutoBug",
+      "name": "Cross-Origin-Opener-Policy",
+      "url": "http://127.0.0.1:3000/",
+      "severity": "Low",
+      "evidence": "Header not present",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "AutoBug",
+      "name": "robots.txt disclosure review",
+      "url": "http://127.0.0.1:3000/",
+      "severity": "Info",
+      "evidence": "HTTP 200; 1 Allow/Disallow rules",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "AutoBug",
+      "name": "API Cache-Control observation",
+      "url": "http://127.0.0.1:3000/",
+      "severity": "Low",
+      "evidence": "API response did not advertise Cache-Control",
+      "manual_status": "Unreviewed"
+    }
+  ],
+  "zap_only_candidates": [
+    {
+      "source": "OWASP ZAP",
+      "name": "Content Security Policy (CSP) Header Not Set",
+      "url": "http://127.0.0.1:3000/",
+      "severity": "Medium (High)",
+      "evidence": "GET",
+      "plugin_id": "10038",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Content Security Policy (CSP) Header Not Set",
+      "url": "http://127.0.0.1:3000/ftp/encrypt.pyc",
+      "severity": "Medium (High)",
+      "evidence": "GET",
+      "plugin_id": "10038",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Content Security Policy (CSP) Header Not Set",
+      "url": "http://127.0.0.1:3000/ftp/package.json.bak",
+      "severity": "Medium (High)",
+      "evidence": "GET",
+      "plugin_id": "10038",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Content Security Policy (CSP) Header Not Set",
+      "url": "http://127.0.0.1:3000/juice-shop/node_modules/express/lib/router/assets/public/styles.css",
+      "severity": "Medium (High)",
+      "evidence": "GET",
+      "plugin_id": "10038",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Content Security Policy (CSP) Header Not Set",
+      "url": "http://127.0.0.1:3000/sitemap.xml",
+      "severity": "Medium (High)",
+      "evidence": "GET",
+      "plugin_id": "10038",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Cross-Domain Misconfiguration",
+      "url": "http://127.0.0.1:3000/polyfills.js",
+      "severity": "Medium (Medium)",
+      "evidence": "Access-Control-Allow-Origin: *",
+      "plugin_id": "10098",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Cross-Domain Misconfiguration",
+      "url": "http://127.0.0.1:3000/robots.txt",
+      "severity": "Medium (Medium)",
+      "evidence": "Access-Control-Allow-Origin: *",
+      "plugin_id": "10098",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Cross-Domain Misconfiguration",
+      "url": "http://127.0.0.1:3000/scripts.js",
+      "severity": "Medium (Medium)",
+      "evidence": "Access-Control-Allow-Origin: *",
+      "plugin_id": "10098",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Cross-Domain Misconfiguration",
+      "url": "http://127.0.0.1:3000/styles.css",
+      "severity": "Medium (Medium)",
+      "evidence": "Access-Control-Allow-Origin: *",
+      "plugin_id": "10098",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Cross-Origin-Embedder-Policy Header Missing or Invalid",
+      "url": "http://127.0.0.1:3000/",
+      "severity": "Low (Medium)",
+      "evidence": "GET",
+      "plugin_id": "90004",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Cross-Origin-Embedder-Policy Header Missing or Invalid",
+      "url": "http://127.0.0.1:3000/ftp",
+      "severity": "Low (Medium)",
+      "evidence": "GET",
+      "plugin_id": "90004",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Cross-Origin-Embedder-Policy Header Missing or Invalid",
+      "url": "http://127.0.0.1:3000/juice-shop/build/routes/fileServer.js:68:18",
+      "severity": "Low (Medium)",
+      "evidence": "GET",
+      "plugin_id": "90004",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Cross-Origin-Embedder-Policy Header Missing or Invalid",
+      "url": "http://127.0.0.1:3000/juice-shop/node_modules/express/lib/router/assets/public/styles.css",
+      "severity": "Low (Medium)",
+      "evidence": "GET",
+      "plugin_id": "90004",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Cross-Origin-Embedder-Policy Header Missing or Invalid",
+      "url": "http://127.0.0.1:3000/sitemap.xml",
+      "severity": "Low (Medium)",
+      "evidence": "GET",
+      "plugin_id": "90004",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Cross-Origin-Opener-Policy Header Missing or Invalid",
+      "url": "http://127.0.0.1:3000/",
+      "severity": "Low (Medium)",
+      "evidence": "GET",
+      "plugin_id": "90004",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Cross-Origin-Opener-Policy Header Missing or Invalid",
+      "url": "http://127.0.0.1:3000/ftp",
+      "severity": "Low (Medium)",
+      "evidence": "GET",
+      "plugin_id": "90004",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Cross-Origin-Opener-Policy Header Missing or Invalid",
+      "url": "http://127.0.0.1:3000/juice-shop/build/routes/fileServer.js:68:18",
+      "severity": "Low (Medium)",
+      "evidence": "GET",
+      "plugin_id": "90004",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Cross-Origin-Opener-Policy Header Missing or Invalid",
+      "url": "http://127.0.0.1:3000/juice-shop/node_modules/express/lib/router/assets/public/styles.css",
+      "severity": "Low (Medium)",
+      "evidence": "GET",
+      "plugin_id": "90004",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Cross-Origin-Opener-Policy Header Missing or Invalid",
+      "url": "http://127.0.0.1:3000/sitemap.xml",
+      "severity": "Low (Medium)",
+      "evidence": "GET",
+      "plugin_id": "90004",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Dangerous JS Functions",
+      "url": "http://127.0.0.1:3000/main.js",
+      "severity": "Low (Low)",
+      "evidence": "bypassSecurityTrustHtml(",
+      "plugin_id": "10110",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Deprecated Feature Policy Header Set",
+      "url": "http://127.0.0.1:3000/",
+      "severity": "Low (Medium)",
+      "evidence": "Feature-Policy",
+      "plugin_id": "10063",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Deprecated Feature Policy Header Set",
+      "url": "http://127.0.0.1:3000/main.js",
+      "severity": "Low (Medium)",
+      "evidence": "Feature-Policy",
+      "plugin_id": "10063",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Deprecated Feature Policy Header Set",
+      "url": "http://127.0.0.1:3000/polyfills.js",
+      "severity": "Low (Medium)",
+      "evidence": "Feature-Policy",
+      "plugin_id": "10063",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Deprecated Feature Policy Header Set",
+      "url": "http://127.0.0.1:3000/scripts.js",
+      "severity": "Low (Medium)",
+      "evidence": "Feature-Policy",
+      "plugin_id": "10063",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Deprecated Feature Policy Header Set",
+      "url": "http://127.0.0.1:3000/sitemap.xml",
+      "severity": "Low (Medium)",
+      "evidence": "Feature-Policy",
+      "plugin_id": "10063",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Timestamp Disclosure - Unix",
+      "url": "http://127.0.0.1:3000/styles.css",
+      "severity": "Low (Low)",
+      "evidence": "1528301887",
+      "plugin_id": "10096",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Timestamp Disclosure - Unix",
+      "url": "http://127.0.0.1:3000/styles.css",
+      "severity": "Low (Low)",
+      "evidence": "1578947368",
+      "plugin_id": "10096",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Timestamp Disclosure - Unix",
+      "url": "http://127.0.0.1:3000/styles.css",
+      "severity": "Low (Low)",
+      "evidence": "1602209945",
+      "plugin_id": "10096",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Timestamp Disclosure - Unix",
+      "url": "http://127.0.0.1:3000/styles.css",
+      "severity": "Low (Low)",
+      "evidence": "1636363636",
+      "plugin_id": "10096",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Timestamp Disclosure - Unix",
+      "url": "http://127.0.0.1:3000/styles.css",
+      "severity": "Low (Low)",
+      "evidence": "1818181818",
+      "plugin_id": "10096",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Modern Web Application",
+      "url": "http://127.0.0.1:3000/",
+      "severity": "Informational (Medium)",
+      "evidence": "<script>\n    window.addEventListener(\"load\", function(){\n      window.cookieconsent.initialise({\n        \"palette\": {\n          \"popup\": { \"background\": \"var(--theme-primary)\", \"text\": \"var(--theme-text)\" },\n          \"button\": { \"background\": \"var(--theme-accent)\", \"text\": \"var(--theme-text)\" }\n        },\n        \"theme\": \"classic\",\n        \"position\": \"bottom-right\",\n        \"content\": { \"message\": \"This website uses fruit cookies to ensure you get the juiciest tracking experience.\", \"dismiss\": \"Me want it!\", \"link\": \"But me wait!\", \"href\": \"https://www.youtube.com/watch?v=9PnbKL3wuH4\" }\n      })});\n  </script>",
+      "plugin_id": "10109",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Modern Web Application",
+      "url": "http://127.0.0.1:3000/juice-shop/build/routes/fileServer.js:68:18",
+      "severity": "Informational (Medium)",
+      "evidence": "<script>\n    window.addEventListener(\"load\", function(){\n      window.cookieconsent.initialise({\n        \"palette\": {\n          \"popup\": { \"background\": \"var(--theme-primary)\", \"text\": \"var(--theme-text)\" },\n          \"button\": { \"background\": \"var(--theme-accent)\", \"text\": \"var(--theme-text)\" }\n        },\n        \"theme\": \"classic\",\n        \"position\": \"bottom-right\",\n        \"content\": { \"message\": \"This website uses fruit cookies to ensure you get the juiciest tracking experience.\", \"dismiss\": \"Me want it!\", \"link\": \"But me wait!\", \"href\": \"https://www.youtube.com/watch?v=9PnbKL3wuH4\" }\n      })});\n  </script>",
+      "plugin_id": "10109",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Modern Web Application",
+      "url": "http://127.0.0.1:3000/juice-shop/node_modules/express/lib/router/assets/public/favicon_js.ico",
+      "severity": "Informational (Medium)",
+      "evidence": "<script>\n    window.addEventListener(\"load\", function(){\n      window.cookieconsent.initialise({\n        \"palette\": {\n          \"popup\": { \"background\": \"var(--theme-primary)\", \"text\": \"var(--theme-text)\" },\n          \"button\": { \"background\": \"var(--theme-accent)\", \"text\": \"var(--theme-text)\" }\n        },\n        \"theme\": \"classic\",\n        \"position\": \"bottom-right\",\n        \"content\": { \"message\": \"This website uses fruit cookies to ensure you get the juiciest tracking experience.\", \"dismiss\": \"Me want it!\", \"link\": \"But me wait!\", \"href\": \"https://www.youtube.com/watch?v=9PnbKL3wuH4\" }\n      })});\n  </script>",
+      "plugin_id": "10109",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Modern Web Application",
+      "url": "http://127.0.0.1:3000/juice-shop/node_modules/express/lib/router/assets/public/styles.css",
+      "severity": "Informational (Medium)",
+      "evidence": "<script>\n    window.addEventListener(\"load\", function(){\n      window.cookieconsent.initialise({\n        \"palette\": {\n          \"popup\": { \"background\": \"var(--theme-primary)\", \"text\": \"var(--theme-text)\" },\n          \"button\": { \"background\": \"var(--theme-accent)\", \"text\": \"var(--theme-text)\" }\n        },\n        \"theme\": \"classic\",\n        \"position\": \"bottom-right\",\n        \"content\": { \"message\": \"This website uses fruit cookies to ensure you get the juiciest tracking experience.\", \"dismiss\": \"Me want it!\", \"link\": \"But me wait!\", \"href\": \"https://www.youtube.com/watch?v=9PnbKL3wuH4\" }\n      })});\n  </script>",
+      "plugin_id": "10109",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Modern Web Application",
+      "url": "http://127.0.0.1:3000/sitemap.xml",
+      "severity": "Informational (Medium)",
+      "evidence": "<script>\n    window.addEventListener(\"load\", function(){\n      window.cookieconsent.initialise({\n        \"palette\": {\n          \"popup\": { \"background\": \"var(--theme-primary)\", \"text\": \"var(--theme-text)\" },\n          \"button\": { \"background\": \"var(--theme-accent)\", \"text\": \"var(--theme-text)\" }\n        },\n        \"theme\": \"classic\",\n        \"position\": \"bottom-right\",\n        \"content\": { \"message\": \"This website uses fruit cookies to ensure you get the juiciest tracking experience.\", \"dismiss\": \"Me want it!\", \"link\": \"But me wait!\", \"href\": \"https://www.youtube.com/watch?v=9PnbKL3wuH4\" }\n      })});\n  </script>",
+      "plugin_id": "10109",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Non-Storable Content",
+      "url": "http://127.0.0.1:3000/ftp/encrypt.pyc",
+      "severity": "Informational (Medium)",
+      "evidence": "403",
+      "plugin_id": "10049",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Storable and Cacheable Content",
+      "url": "http://127.0.0.1:3000/robots.txt",
+      "severity": "Informational (Medium)",
+      "evidence": "GET",
+      "plugin_id": "10049",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Storable but Non-Cacheable Content",
+      "url": "http://127.0.0.1:3000/",
+      "severity": "Informational (Medium)",
+      "evidence": "max-age=0",
+      "plugin_id": "10049",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Storable but Non-Cacheable Content",
+      "url": "http://127.0.0.1:3000/assets/public/favicon_js.ico",
+      "severity": "Informational (Medium)",
+      "evidence": "max-age=0",
+      "plugin_id": "10049",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Storable but Non-Cacheable Content",
+      "url": "http://127.0.0.1:3000/polyfills.js",
+      "severity": "Informational (Medium)",
+      "evidence": "max-age=0",
+      "plugin_id": "10049",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Storable but Non-Cacheable Content",
+      "url": "http://127.0.0.1:3000/sitemap.xml",
+      "severity": "Informational (Medium)",
+      "evidence": "max-age=0",
+      "plugin_id": "10049",
+      "manual_status": "Unreviewed"
+    },
+    {
+      "source": "OWASP ZAP",
+      "name": "Storable but Non-Cacheable Content",
+      "url": "http://127.0.0.1:3000/styles.css",
+      "severity": "Informational (Medium)",
+      "evidence": "max-age=0",
+      "plugin_id": "10049",
+      "manual_status": "Unreviewed"
+    }
+  ],
+  "manual_review_required": true,
+  "interpretation": "A candidate match uses normalized title and URL only. An unmatched result is not automatically a false positive or false negative. Confirm equivalent rules, scope, evidence, and actual behavior manually before computing accuracy."
+}

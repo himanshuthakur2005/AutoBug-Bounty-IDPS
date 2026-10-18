@@ -1,0 +1,222 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AutoBug Bounty | Security Assessments</title>
+<style>
+:root {
+    color-scheme: dark;
+    --bg: #0b1020;
+    --panel: #141c2f;
+    --border: #293650;
+    --text: #edf2ff;
+    --muted: #9caac2;
+    --accent: #55d6be;
+}
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    padding: 24px 16px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+}
+main { max-width: 1100px; margin: auto; }
+a { color: var(--accent); }
+.panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+}
+.muted, .label { color: var(--muted); }
+.label { font-size: 12px; }
+button, .button {
+    display: inline-block;
+    background: var(--accent);
+    color: #071b19;
+    border: 0;
+    border-radius: 7px;
+    padding: 11px 15px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+}
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+}
+.metric {
+    background: #10182a;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 14px;
+}
+.metric strong {
+    display: block;
+    font-size: 25px;
+    margin-top: 8px;
+}
+.check {
+    border-top: 1px solid var(--border);
+    padding: 16px 0;
+}
+.pill {
+    display: inline-block;
+    padding: 5px 8px;
+    margin: 0 5px 5px 0;
+    border-radius: 5px;
+    background: #2a3851;
+    font-size: 12px;
+}
+.status { color: var(--accent); }
+.warning { color: #ffcb74; }
+.error { color: #ff9caa; }
+.evidence { overflow-wrap: anywhere; white-space: pre-wrap; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    overflow-wrap: anywhere;
+}
+@media (max-width: 600px) {
+    body { padding: 12px 8px; }
+    .panel { padding: 14px; }
+}
+</style>
+</head>
+<body>
+<main>
+    <section class="panel">
+        <a href="/">← Back to main dashboard</a>
+        <h1>Security Assessments</h1>
+        <p class="muted">
+            Local target: http://127.0.0.1:3000
+        </p>
+        <p>
+            Each assessment runs the 26 configured checks and stores
+            the results in SQLite and a JSON report.
+        </p>
+        <form action="{{ url_for('run_security_checks_route') }}"
+              method="post">
+            <button type="submit">Run New Assessment</button>
+        </form>
+    </section>
+
+    {% if error %}
+    <section class="panel error">
+        <h2>Assessment failed</h2>
+        <p>{{ error }}</p>
+        <p>Check that Juice Shop is running on port 3000.</p>
+    </section>
+    {% endif %}
+
+    {% if latest_report %}
+    <section class="panel">
+        <h2>Latest Saved Assessment</h2>
+        <p><strong>Target:</strong> {{ latest_report.target }}</p>
+        <p><strong>Time (UTC):</strong> {{ latest_report.scanned_at }}</p>
+
+        <div class="grid">
+            <div class="metric">
+                <span class="label">CHECKS</span>
+                <strong>{{ latest_report.check_count }}</strong>
+            </div>
+            <div class="metric">
+                <span class="label">POTENTIAL FINDINGS</span>
+                <strong>{{ latest_report.potential_count }}</strong>
+            </div>
+            <div class="metric">
+                <span class="label">NEEDS REVIEW</span>
+                <strong>{{ latest_report.review_count }}</strong>
+            </div>
+        </div>
+
+        {% if latest_report.report_file %}
+        <p>
+            <a class="button"
+               href="{{ url_for('download_report',
+                                filename=latest_report.report_file) }}">
+                Download Complete JSON Report
+            </a>
+        </p>
+        {% endif %}
+
+        <p class="muted">{{ latest_report.note }}</p>
+    </section>
+
+    <section class="panel">
+        <h2>Assessment Findings</h2>
+
+        {% for check in checks %}
+        <article class="check">
+            <h3>{{ loop.index }}. {{ check.title }}</h3>
+            <span class="pill status">{{ check.status }}</span>
+            <span class="pill">Severity: {{ check.severity }}</span>
+            <p><strong>Evidence</strong></p>
+            <p class="evidence">{{ check.evidence }}</p>
+            <p><strong>Recommendation</strong></p>
+            <p>{{ check.recommendation }}</p>
+        </article>
+        {% else %}
+        <p class="muted">No saved check results yet. Run an assessment above.</p>
+        {% endfor %}
+    </section>
+    {% else %}
+    <section class="panel">
+        <h2>No saved security assessment yet</h2>
+        <p>Click Run New Assessment to generate your first saved report.</p>
+    </section>
+    {% endif %}
+
+    <section class="panel">
+        <h2>Assessment History</h2>
+        {% if history %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Time (UTC)</th>
+                        <th>Checks</th>
+                        <th>Potential</th>
+                        <th>Review</th>
+                        <th>Report</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in history %}
+                    <tr>
+                        <td>{{ item.scanned_at }}</td>
+                        <td>{{ item.check_count }}</td>
+                        <td>{{ item.potential_count }}</td>
+                        <td>{{ item.review_count }}</td>
+                        <td>
+                            <a href="{{ url_for('download_report',
+                                                filename=item.report_file) }}">
+                                Download JSON
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="muted">Your completed assessments will appear here.</p>
+        {% endif %}
+    </section>
+
+    <section class="panel muted">
+        <strong>Interpretation:</strong>
+        These are automated indicators, not guaranteed vulnerability
+        discoveries. Validate findings before reporting them.
+    </section>
+</main>
+</body>
+</html>

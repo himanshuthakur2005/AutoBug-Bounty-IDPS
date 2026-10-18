@@ -1,0 +1,34 @@
+# Python virtual environment
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Local secrets and environment settings
+.env
+.env.*
+!.env.example
+
+# Local databases and temporary files
+*.db
+*.sqlite
+*.sqlite3
+*.log
+
+# Editor and operating-system files
+.vscode/
+.idea/
+.DS_Store
+
+# Generated scan reports (keep evaluation artifacts separately)
+reports/*
+!reports/.gitkeep
+
+# Local code backups
+*.backup
+*.before_phase*
+*-backup
+backups/

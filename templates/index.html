@@ -1,0 +1,289 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AutoBug Bounty | IDPS Dashboard</title>
+<style>
+:root {
+    color-scheme: dark;
+    --bg: #0b1020;
+    --panel: #141c2f;
+    --border: #293650;
+    --text: #edf2ff;
+    --muted: #9caac2;
+    --accent: #55d6be;
+}
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+}
+header {
+    padding: 24px 5%;
+    background: #10182a;
+    border-bottom: 1px solid var(--border);
+}
+header h1 { margin: 0 0 8px; }
+header p, .muted, .label { color: var(--muted); }
+main {
+    max-width: 1200px;
+    margin: auto;
+    padding: 26px 18px;
+}
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+}
+.panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 18px;
+    min-width: 0;
+}
+.metric { font-size: 30px; font-weight: bold; margin-top: 12px; }
+.label { font-size: 13px; }
+button, .button {
+    display: inline-block;
+    border: 0;
+    border-radius: 7px;
+    padding: 11px 14px;
+    background: var(--accent);
+    color: #071b19;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    margin: 4px 5px 4px 0;
+}
+.secondary {
+    background: #2a3851;
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+.finding, .record {
+    padding: 13px 0;
+    border-top: 1px solid var(--border);
+    overflow-wrap: anywhere;
+}
+.severity {
+    display: inline-block;
+    border-radius: 5px;
+    padding: 5px 8px;
+    background: #303d54;
+    font-size: 12px;
+    font-weight: bold;
+}
+.error { color: #ff9caa; }
+code { overflow-wrap: anywhere; }
+table { width: 100%; border-collapse: collapse; }
+th, td {
+    text-align: left;
+    padding: 10px 8px;
+    border-bottom: 1px solid var(--border);
+    overflow-wrap: anywhere;
+}
+.table-wrap { overflow-x: auto; }
+a.text-link { color: var(--accent); }
+@media (max-width: 600px) {
+    main { padding: 16px 10px; }
+    .panel { padding: 14px; }
+    th, td { font-size: 13px; }
+}
+</style>
+</head>
+<body>
+<header>
+    <h1>AutoBug Bounty</h1>
+    <p>Automated Web Security Assessment &amp; IDPS Monitor</p>
+</header>
+
+<main>
+    <section class="panel">
+        <div class="label">AUTHORIZED LOCAL LAB</div>
+        <h2><code>{{ target }}</code></h2>
+        <p class="muted">
+            Run basic security checks against your local Juice Shop.
+        </p>
+        <form action="{{ url_for('run_scan') }}" method="post">
+            <button type="submit">Run Basic Security Scan</button>
+        </form>
+        <a class="button" href="{{ url_for('security_checks_page') }}">
+            Open 26 Security Checks
+        </a>
+    </section>
+
+    <section class="grid">
+        <div class="panel">
+            <div class="label">SAVED BASIC SCANS</div>
+            <div class="metric">{{ scan_count }}</div>
+        </div>
+        <div class="panel">
+            <div class="label">PERSISTED IDPS ALERTS</div>
+            <div class="metric">{{ alert_count }}</div>
+        </div>
+        <div class="panel">
+            <div class="label">JSON REPORT FILES</div>
+            <div class="metric">{{ report_files | length }}</div>
+        </div>
+        <div class="panel">
+            <div class="label">SAVED SECURITY ASSESSMENTS</div>
+            <div class="metric">{{ security_scan_count }}</div>
+        </div>
+    </section>
+
+    {% if error %}
+    <section class="panel error">
+        <h2>Scan error</h2>
+        <p>{{ error }}</p>
+    </section>
+    {% endif %}
+
+    {% if result %}
+    <section class="panel">
+        <h2>Latest Basic Scan Result</h2>
+        <p><strong>Target:</strong> {{ result.target }}</p>
+        <p><strong>HTTP status:</strong> {{ result.status_code }}</p>
+        <p><strong>Server header:</strong> {{ result.server }}</p>
+        <p><strong>Scan time:</strong> {{ result.scanned_at }}</p>
+        <p class="muted">{{ result.note }}</p>
+
+        {% if result.report_file %}
+        <a class="button"
+           href="{{ url_for('download_report', filename=result.report_file) }}">
+            Download Basic Scan JSON
+        </a>
+        {% endif %}
+
+        <h3>Findings ({{ result.findings | length }})</h3>
+        {% if result.findings %}
+            {% for finding in result.findings %}
+            <article class="finding">
+                <span class="severity">{{ finding.severity }}</span>
+                <h3>{{ finding.title }}</h3>
+                <p>{{ finding.evidence }}</p>
+                <p class="muted">
+                    <strong>Recommendation:</strong>
+                    {{ finding.recommendation }}
+                </p>
+            </article>
+            {% endfor %}
+        {% else %}
+            <p>No issues were flagged by these basic checks.</p>
+        {% endif %}
+    </section>
+    {% endif %}
+
+    <section class="panel">
+        <h2>IDPS Detection Lab</h2>
+        <p class="muted">
+            These buttons generate simulated events locally. They do not
+            send attack requests to Juice Shop.
+        </p>
+        <form action="{{ url_for('demo_suspicious_path') }}" method="post">
+            <button type="submit">Simulate Suspicious Path</button>
+        </form>
+        <form action="{{ url_for('demo_request_burst') }}" method="post">
+            <button class="secondary" type="submit">
+                Simulate Request Burst
+            </button>
+        </form>
+    </section>
+
+    <section class="panel">
+        <h2>Recent IDPS Alerts</h2>
+        {% if alerts %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Time (UTC)</th>
+                        <th>Rule</th>
+                        <th>Severity</th>
+                        <th>Evidence</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for alert in alerts %}
+                    <tr>
+                        <td>{{ alert.created_at }}</td>
+                        <td>{{ alert.rule_name }}</td>
+                        <td><span class="severity">{{ alert.severity }}</span></td>
+                        <td>{{ alert.evidence }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="muted">No alerts recorded yet.</p>
+        {% endif %}
+    </section>
+
+    <section class="panel">
+        <h2>Basic Scan History</h2>
+        {% if scans %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Time (UTC)</th>
+                        <th>Target</th>
+                        <th>HTTP</th>
+                        <th>Findings</th>
+                        <th>Report</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for scan in scans %}
+                    <tr>
+                        <td>{{ scan.scanned_at }}</td>
+                        <td>{{ scan.target }}</td>
+                        <td>{{ scan.status_code }}</td>
+                        <td>{{ scan.finding_count }}</td>
+                        <td>
+                            <a class="text-link"
+                               href="{{ url_for('download_report', filename=scan.report_file) }}">
+                                Download
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="muted">No basic scans saved yet.</p>
+        {% endif %}
+    </section>
+
+    <section class="panel">
+        <h2>Available JSON Reports</h2>
+        {% if report_files %}
+            {% for filename in report_files %}
+            <div class="record">
+                <code>{{ filename }}</code>
+                <a class="button"
+                   href="{{ url_for('download_report', filename=filename) }}">
+                    Download
+                </a>
+            </div>
+            {% endfor %}
+        {% else %}
+        <p class="muted">Reports will appear here after scanning.</p>
+        {% endif %}
+    </section>
+
+    <p class="muted">
+        Academic security project. Findings require validation; automated
+        indicators do not prove exploitability.
+    </p>
+</main>
+</body>
+</html>
