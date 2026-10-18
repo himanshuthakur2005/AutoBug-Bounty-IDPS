@@ -19,6 +19,7 @@ from flask import (
 )
 
 from modules.security_checks import run_security_checks
+from modules.sql_injection import run_sqli_assessment
 
 BASE_DIR = Path(__file__).resolve().parent
 REPORT_DIR = BASE_DIR / "reports"
@@ -87,6 +88,18 @@ def init_db():
                 check_count INTEGER NOT NULL,
                 potential_count INTEGER NOT NULL,
                 review_count INTEGER NOT NULL,
+                report_file TEXT NOT NULL
+            )
+        """)
+
+        # SQLi assessment history is separate; existing tables are unchanged.
+        db.execute("""
+            CREATE TABLE IF NOT EXISTS sqli_scans (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                scanned_at TEXT NOT NULL,
+                target TEXT NOT NULL,
+                status TEXT NOT NULL,
+                severity TEXT NOT NULL,
                 report_file TEXT NOT NULL
             )
         """)
@@ -290,6 +303,11 @@ def dashboard_data():
             SELECT * FROM security_scans ORDER BY id DESC LIMIT 1
         """).fetchone()
 
+        sqli_scan_count = db.execute("SELECT COUNT(*) FROM sqli_scans").fetchone()[0]
+        latest_sqli_scan = db.execute(
+            "SELECT * FROM sqli_scans ORDER BY id DESC LIMIT 1"
+        ).fetchone()
+
     report_files = sorted(
         [
             p.name for p in REPORT_DIR.glob("*.json")
@@ -305,6 +323,8 @@ def dashboard_data():
         "alert_count": alert_count,
         "security_scan_count": security_scan_count,
         "latest_security_scan": latest_security_scan,
+        "sqli_scan_count": sqli_scan_count,
+        "latest_sqli_scan": latest_sqli_scan,
         "report_files": report_files,
     }
 
@@ -418,6 +438,48 @@ def run_security_checks_route():
             history=history,
             error=str(exc),
         ), 502
+
+
+@app.get("/sqli")
+def sqli_page():
+    latest_report = None
+    history = []
+    with get_db() as db:
+        history = db.execute("SELECT * FROM sqli_scans ORDER BY id DESC LIMIT 20").fetchall()
+        latest = db.execute("SELECT report_file FROM sqli_scans ORDER BY id DESC LIMIT 1").fetchone()
+    if latest:
+        report_path = REPORT_DIR / latest["report_file"]
+        if report_path.is_file():
+            try:
+                latest_report = json.loads(report_path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                latest_report = None
+    return render_template("sqli.html", latest_report=latest_report, history=history, error=None)
+
+
+@app.post("/sqli/run")
+def run_sqli_route():
+    try:
+        result = run_sqli_assessment()
+        filename = save_json_report(result, "sqli_scan")
+        result["report_file"] = filename
+        with get_db() as db:
+            db.execute("""INSERT INTO sqli_scans
+                (scanned_at, target, status, severity, report_file)
+                VALUES (?, ?, ?, ?, ?)""",
+                (result["scanned_at"], result["target"], result["status"],
+                 result["severity"], filename))
+        if result["status"] == "Potential finding":
+            save_alert("sqli-assessment", "Possible SQL injection indicator", "High",
+                       result["evidence"], "SQLI_INDICATOR")
+        return redirect(url_for("sqli_page"))
+    except (requests.RequestException, ValueError) as exc:
+        app.logger.warning("SQLi assessment failed: %s", exc)
+        latest_report = None
+        with get_db() as db:
+            history = db.execute("SELECT * FROM sqli_scans ORDER BY id DESC LIMIT 20").fetchall()
+        return render_template("sqli.html", latest_report=latest_report, history=history,
+                               error=str(exc)), 502
 
 
 @app.post("/demo/suspicious-path")

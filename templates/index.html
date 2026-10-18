@@ -117,6 +117,9 @@ a.text-link { color: var(--accent); }
         <a class="button" href="{{ url_for('security_checks_page') }}">
             Open 26 Security Checks
         </a>
+        <a class="button secondary" href="{{ url_for('sqli_page') }}">
+            SQL Injection Assessment
+        </a>
     </section>
 
     <section class="grid">
@@ -135,6 +138,10 @@ a.text-link { color: var(--accent); }
         <div class="panel">
             <div class="label">SAVED SECURITY ASSESSMENTS</div>
             <div class="metric">{{ security_scan_count }}</div>
+        </div>
+        <div class="panel">
+            <div class="label">SAVED SQLi ASSESSMENTS</div>
+            <div class="metric">{{ sqli_scan_count }}</div>
         </div>
     </section>
 

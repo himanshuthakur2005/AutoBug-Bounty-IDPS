@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AutoBug Bounty | SQL Injection Assessment</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1020;--panel:#141c2f;--border:#293650;--text:#edf2ff;--muted:#9caac2;--accent:#55d6be}
+*{box-sizing:border-box}body{margin:0;padding:24px 16px;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
+main{max-width:1050px;margin:auto}.panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+.muted,.label{color:var(--muted)}a{color:var(--accent)}button,.button{display:inline-block;background:var(--accent);color:#071b19;border:0;border-radius:7px;padding:11px 15px;font-weight:bold;cursor:pointer;text-decoration:none}
+.pill{display:inline-block;padding:5px 8px;margin:0 5px 5px 0;border-radius:5px;background:#2a3851;font-size:12px}.warning{color:#ffcb74}.error{color:#ff9caa}.evidence{overflow-wrap:anywhere;white-space:pre-wrap}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:10px;border-bottom:1px solid var(--border);overflow-wrap:anywhere}.table-wrap{overflow-x:auto}
+</style></head><body><main>
+<section class="panel"><a href="/">← Back to dashboard</a><h1>SQL Injection Indicator Assessment</h1>
+<p class="muted">Authorized local lab only: http://127.0.0.1:3000/rest/user/login</p>
+<p>This low-impact check compares an invalid-login control with a single-quote syntax probe. It does not attempt login bypass, extract data, or run destructive payloads.</p>
+<form action="{{ url_for('run_sqli_route') }}" method="post"><button type="submit">Run SQLi Indicator Check</button></form></section>
+{% if error %}<section class="panel error"><h2>Assessment failed</h2><p>{{ error }}</p><p>Check that Juice Shop is running on port 3000.</p></section>{% endif %}
+{% if latest_report %}<section class="panel"><h2>Latest SQLi Assessment</h2>
+<span class="pill">{{ latest_report.status }}</span><span class="pill">Severity: {{ latest_report.severity }}</span>
+<p><strong>Target:</strong> {{ latest_report.target }}{{ latest_report.endpoint }}</p><p><strong>Time (UTC):</strong> {{ latest_report.scanned_at }}</p>
+<p><strong>Control HTTP status:</strong> {{ latest_report.control_status_code }}</p><p><strong>Quote probe HTTP status:</strong> {{ latest_report.probe_status_code }}</p>
+<p><strong>Evidence:</strong></p><p class="evidence">{{ latest_report.evidence }}</p><p><strong>Recommendation:</strong> {{ latest_report.recommendation }}</p>
+<p class="muted">{{ latest_report.note }}</p>
+{% if latest_report.report_file %}<a class="button" href="{{ url_for('download_report', filename=latest_report.report_file) }}">Download JSON report</a>{% endif %}
+</section>{% else %}<section class="panel"><h2>No SQLi assessment saved yet</h2><p>Run the check above to create a report.</p></section>{% endif %}
+<section class="panel"><h2>Assessment History</h2>{% if history %}<div class="table-wrap"><table><thead><tr><th>Time (UTC)</th><th>Status</th><th>Severity</th><th>Report</th></tr></thead><tbody>{% for item in history %}<tr><td>{{ item.scanned_at }}</td><td>{{ item.status }}</td><td>{{ item.severity }}</td><td><a href="{{ url_for('download_report', filename=item.report_file) }}">Download JSON</a></td></tr>{% endfor %}</tbody></table></div>{% else %}<p class="muted">Completed assessments will appear here.</p>{% endif %}</section>
+<section class="panel muted"><strong>Important:</strong> A suspicious response is only an indicator, not proof of SQL injection. A clean response does not prove the endpoint is safe. Verify manually in the authorized lab and fix vulnerable database calls with parameterized queries.</section>
+</main></body></html>
